@@ -1,0 +1,8 @@
+SECTIONS
+{
+	. = 0x10000000;
+        .text : { *(.text) }
+	.data ALIGN(0x1000): { *(.data) *(.rodata) }
+	.bss ALIGN(0x1000): { *(.bss) }
+	/DISCARD/ : { *(.comment) }
+}

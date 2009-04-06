@@ -1,0 +1,16 @@
+
+dlmalloc.c:
+        Doug Lea's malloc implementation, public domain
+
+Gen_wctype.hs:
+        Written by Sébastien Carlier, public domain.
+
+wctype.c:
+        Output of Gen_wctype.hs, public domain.
+
+libc.c:
+        Standard C routines adapted from various public domain
+        sources.
+
+bsearch.c:
+	Adapted from glibc.  GNU GPLv2.1 or later.

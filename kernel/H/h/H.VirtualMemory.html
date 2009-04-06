@@ -1,0 +1,611 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.VirtualMemory</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.VirtualMemory</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	><P
+	  >Virtual Memory (section 3.2 in the paper)
+</P
+	  ><P
+	  >The virtual memory facilities in the <TT
+	    ><A HREF = "H.AdHocMem.html#t%3AH"
+	      >H</A
+	      ></TT
+	    > monad support writing and
+reading of <EM
+	    >page maps</EM
+	    >, which define the translation of <EM
+	    >virtual
+addresses</EM
+	    > to physical addresses, with associated access permissions and history.  
+</P
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3AVAddr"
+		>VAddr</A
+		> = <A HREF = "H.AdHocMem.html#t%3AWord32"
+		>Word32</A
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AminVAddr"
+		>minVAddr</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+		>VAddr</A
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmaxVAddr"
+		>maxVAddr</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+		>VAddr</A
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3APageMap"
+		>PageMap</A
+		> </TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AallocPageMap"
+		>allocPageMap</A
+		> :: <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> (Maybe <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AfreePageMap"
+		>freePageMap</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		> -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3APageInfo"
+		>PageInfo</A
+		>  = <A HREF = "#v%3APageInfo"
+		>PageInfo</A
+		> {<TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3AphysPage"
+		      >physPage</A
+		      > :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		      >PhysPage</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Awriteable"
+		      >writeable</A
+		      > :: Bool</TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Adirty"
+		      >dirty</A
+		      > :: Bool</TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Aaccessed"
+		      >accessed</A
+		      > :: Bool</TD
+		    ></TR
+		  ></TABLE
+		>}</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AsetPage"
+		>setPage</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		> -&gt; <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+		>VAddr</A
+		> -&gt; Maybe <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+		>PageInfo</A
+		> -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> Bool</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AgetPage"
+		>getPage</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		> -&gt; <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+		>VAddr</A
+		> -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> (Maybe <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+		>PageInfo</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AfromPageMap"
+		>fromPageMap</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		> -&gt; <A HREF = "H.VirtualMemory.html#t%3APDir"
+		>PDir</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3AVAddr"
+	  ></A
+	  ><B
+	  >VAddr</B
+	  > = <A HREF = "H.AdHocMem.html#t%3AWord32"
+	  >Word32</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	><TT
+	  >VAddr</TT
+	  > is a concrete type representing virtual addresses.</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AminVAddr"
+	  ></A
+	  ><B
+	  >minVAddr</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+	  >VAddr</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmaxVAddr"
+	  ></A
+	  ><B
+	  >maxVAddr</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+	  >VAddr</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3APageMap"
+	  ></A
+	  ><B
+	  >PageMap</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		      >PageMap</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Eq <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		      >PageMap</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Ord <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		      >PageMap</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AallocPageMap"
+	  ></A
+	  ><B
+	  >allocPageMap</B
+	  > :: <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > (Maybe <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>New page maps, represented by the abstract type <TT
+	  >PageMap</TT
+	  >, are
+obtained using <TT
+	  >llocPageMap</TT
+	  >. The number of available page maps may be limited;
+<TT
+	  >allocPageMap</TT
+	  > returns  returns <TT
+	  >Nothing</TT
+	  > if no more maps are available. </TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AfreePageMap"
+	  ></A
+	  ><B
+	  >freePageMap</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  > -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3APageInfo"
+	  ></A
+	  ><B
+	  >PageInfo</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "ndoc"
+	      >Page map entries are indexed by valid, aligned, virtual addresses.  The 
+entry for an unmapped page contains {tt Nothing}; the entry for a 
+mapped page contains a value, <TT
+		>Just p</TT
+		>, where <TT
+		>p</TT
+		> is 
+of type <TT
+		>PageInfo</TT
+		>.
+</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "5" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3APageInfo"
+		      ></A
+		      ><B
+		      >PageInfo</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body" COLSPAN = "2"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3AphysPage"
+			    ></A
+			    ><B
+			    >physPage</B
+			    > :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+			    >PhysPage</A
+			    ></TD
+			  ><TD CLASS = "rdoc"
+			  ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Awriteable"
+			    ></A
+			    ><B
+			    >writeable</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  >indicates whether the user process has write access to the page</TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Adirty"
+			    ></A
+			    ><B
+			    >dirty</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  >indicates that the page has been written</TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Aaccessed"
+			    ></A
+			    ><B
+			    >accessed</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  >indicates that it has been read or written</TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Eq <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+		      >PageInfo</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+		      >PageInfo</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AsetPage"
+	  ></A
+	  ><B
+	  >setPage</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  > -&gt; <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+	  >VAddr</A
+	  > -&gt; Maybe <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+	  >PageInfo</A
+	  > -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > Bool</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AgetPage"
+	  ></A
+	  ><B
+	  >getPage</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  > -&gt; <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+	  >VAddr</A
+	  > -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > (Maybe <A HREF = "H.VirtualMemory.html#t%3APageInfo"
+	  >PageInfo</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AfromPageMap"
+	  ></A
+	  ><B
+	  >fromPageMap</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  > -&gt; <A HREF = "H.VirtualMemory.html#t%3APDir"
+	  >PDir</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

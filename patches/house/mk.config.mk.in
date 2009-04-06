@@ -1,0 +1,21 @@
+diff -u ghc-xen/mk/config.mk.in ghc-house/mk/config.mk.in
+--- ghc-xen/mk/config.mk.in	2008-05-29 21:34:10.000000000 +0000
++++ ghc-house/mk/config.mk.in	2008-02-13 08:01:00.000000000 +0000
+@@ -269,7 +269,7 @@
+ GhcWithSMP=$(strip $(if $(filter YESNO, $(ArchSupportsSMP)$(GhcUnregisterised)),YES,NO))
+ 
+ # Back fix this
+-ifeq "$(HostOS_CPP)" "xen"
++ifeq "$(HostOS_CPP)" "house"
+ GhcWithSMP=NO
+ endif
+ 
+@@ -376,7 +376,7 @@
+ # We can only build GHCi threaded if we have a threaded RTS:
+ GhcThreaded = $(if $(findstring thr,$(GhcRTSWays)),YES,NO)
+ 
+-ifeq "$(HostOS_CPP)" "xen"
++ifeq "$(HostOS_CPP)" "house"
+ GhcLibWays=
+ GhcRTSWays=
+ endif

@@ -1,0 +1,33 @@
+To make user executables:
+
+1. Write a normal C file.  THe first function in the file 
+(not necessarily called main) will be the entry point.
+You should be able to use most standard C features except
+(just for the moment) floating point.  There is no
+access to command line arguments.
+
+2. The only library functions available are:
+
+exit
+malloc
+free
+printf
+abs
+isdigit
+memcpy
+memmove
+memset
+strcmp
+strcpy
+strncpy
+strnlen
+strrchr
+atof
+
+3. Compile and link your file using the 'doit' script.  Compilation
+is normal; linking is rather special, and makes use of the ld script
+file 'script'. 
+
+4. Make the resulting code available as a grub module, and execute
+it using the command 'run' giving the (full) module name as argument.
+

@@ -1,0 +1,9 @@
+
+for app do
+  f=`basename $app .c`
+  #echo $f
+  gcc -c -fno-builtin $f.c
+  ld --strip-all --oformat "a.out-i386-linux" -o $f -T script $f.o libuser.a
+  rm $f.o
+done
+

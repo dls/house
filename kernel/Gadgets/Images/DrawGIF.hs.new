@@ -1,0 +1,40 @@
+module DrawGIF(drawGIF) where
+import GIF
+import GIFdecompress
+import GadgetsPrelude
+--import Data.Array
+import Data.Maybe(fromJust)
+import Data.Array.Unboxed as U
+import Data.Word(Word8)
+
+drawGIF :: (RGB -> PixelValue) -> GIF.File -> DrawFun
+drawGIF pv = drawGIF' pv . decompressGIF
+
+drawGIF' pixelValue (GIF sig scr cmaplist blocks) size area@(a1,a2) = 
+    drawbg globalcmap scr ++ drawBlocks blocks
+  where
+    globalcmap = fmap (convColormap pixelValue) cmaplist
+
+    clip (p1,p2) = (pairop max p1 a1,pairop min p2 a2)
+
+    drawbg Nothing _ = []
+    drawbg (Just cmap) SD {swidth=w,sheight=h,background=bg} =
+      [DrawSetPixelValue (cmap!fromIntegral bg),
+       DrawFilledRectangle (clip ((0,0),(w-1,h-1)))]
+
+    drawBlocks = concatMap drawBlock
+    drawBlock = either drawEB drawImage
+    drawEB _ = [] -- hmm
+
+    drawImage (GIF.Image (ID x0 y0 w h _ i _) cmaplist (Right ps)) =
+       zipWith (setPixel . (cmap!))
+		   (U.elems ps)
+		   [(x,y)|y<-take h [y0..],x<-take w [x0..]]
+      where
+        cmap = maybe (fromJust globalcmap) (convColormap pixelValue) cmaplist
+
+setPixel c p = DrawSetPixel p c
+
+convColormap ::  (RGB -> PixelValue) -> ColorMap -> UArray Word8 PixelValue
+convColormap pv xs = listArray (0,fromIntegral (length xs-1)) (map convRGB xs)
+  where convRGB (r,g,b) = pv (257*r,257*g,257*b)

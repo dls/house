@@ -1,0 +1,257 @@
+hOp -- Sébastien Carlier and Jérémy Bobbio
+
+What is hOp ?
+=============
+
+hOp is a micro-kernel based on the RTS of GHC, the Glasgow Haskell
+Compiler.  It is meant to enable people to experiment with writing
+device drivers in Haskell.  Currently, hOp is still very hackish, and
+IA32-specific.  Contributions are welcome!
+
+The RTS of GHC is truly an amazing piece of software.  By removing the
+system-specific bits, and just adding a few lines of C and assembly
+code, it turns into a standalone micro-kernel that can be extended in
+our favorite language, Haskell.
+
+All functions from the base hierarchical library outside of the System
+module is available.  This includes threads, communication primitives
+and the foreign interface, which means that experimenting with writing
+drivers in Haskell should be reasonably easy.
+
+Building
+========
+
+In order to build hOp, you need every software package required to
+build GHC, autoconf, and also "genext2fs", which is available as a
+package in Debian GNU/Linux, but can also be compiled from source:
+http://uclibc.org/downloads/buildroot-sources/genext2fs_1.3.orig.tar.gz
+
+Build steps are as follows:
+
+1. Enter "make boot" to download and extract the source code of GHC.
+
+2. Either enter "make floppy" to build a 2.88 MB floppy image named
+   hOp.flp, or enter "make iso" to build a bootable CDROM image.
+
+Starting hOp
+============
+
+hOp runs on real hardware, but 2.88MB floppy drives are rare, and
+burning the CDROM image wastes a blank CD.
+
+It is usually more convenient to use an IA32 emulator such as Bochs
+(http://bochs.sourceforge.net/), which can read 2.88MB floppy disks
+and CDROM images.
+
+Here is a minimal configuration file (.bochsrc) for Bochs:
+
+--- 8< --- cut here --- 8< ---------------------------------------------
+config_interface: x
+display_library: term
+romimage: file=/usr/share/bochs/BIOS-bochs-latest, address=0xf0000
+megs: 32
+vgaromimage: /usr/share/vgabios/vgabios.bin
+floppya: 2_88=hOp.flp, status=inserted
+ata0: enabled=0, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
+ata1: enabled=0, ioaddr1=0x170, ioaddr2=0x370, irq=15
+ata2: enabled=0, ioaddr1=0x1e8, ioaddr2=0x3e0, irq=11
+ata3: enabled=0, ioaddr1=0x168, ioaddr2=0x360, irq=9
+boot: floppy
+ips: 1000000
+floppy_bootsig_check: disabled=0
+log: /tmp/bochsout.txt
+panic: action=ask
+error: action=report
+info: action=report
+debug: action=ignore
+debugger_log: -
+vga_update_interval: 300000
+keyboard_serial_delay: 250
+keyboard_paste_delay: 100000
+floppy_command_delay: 500
+mouse: enabled=0
+private_colormap: enabled=0
+--- 8< --- cut here --- 8< ---------------------------------------------
+
+
+Enabling Debugging
+------------------
+
+Debugging can be enabled by doing the following changes:
+
+* build.mk
+  
+  To compile the RTS with debugging enabled, you need to change the
+  compilation options in build.mk:
+  
+      GhcRtsHcOpts = -optc-DSTANDALONE -optc-DDEBUG -optc-UPROFILING
+      GhcRtsCcOpts = -O -DSTANDALONE -DDEBUG -UPROFILING
+
+* kernel/Makefile
+
+  RTS debug messages are printed using a simple compatibility layer to
+  functions like fprintf.  These messages can currently be either
+  displayed directly on screen (which trash what was displayed by
+  Haskell code) or using the "console output" feature of Bochs.
+
+  To enable video printing, add in kernel/Makefile:
+
+     OBJS += cbits/video.o 
+
+  To enable Bochs output, add in kernel/Makefile:
+
+     CFLAGS += -DBOCHS_VIDEO
+
+* kernel/cbits/c_start.c
+
+  When booting, hOp launches the usual main() function of the RTS.
+  The same debug flags as on the command line are thus available;
+  they can be set by modifying argc and argv at the start of c_start()
+  in kernel/cbits/c_start.c.
+
+Implentation details
+====================
+
+Making a standalone RTS
+-----------------------
+
+The Run-Time System (RTS) of GHC handles memory management, thread
+scheduling and inter-thread communication, so it can be thought of as
+a micro-kernel.  Making a standalone RTS - removing all dependencies
+on an operating system - is in fact fairly straightforward.
+
+The RTS is written in portable C code, and therefore requires a C
+execution environment to run.  Our goal to remove dependencies on an
+operating system precludes the use of a full featured C library, so
+only a handful of functions are included to provide a very minimal
+C environment.  It is composed of the following components:
+
+* a tiny libc with these functions:
+  - abs, isdigit, memcpy, memmove, memset, strcmp, strnlen
+  - iswalnum, iswalpha, iswcntrl, iswdigit, iswlower, iswpunct, iswupper,
+    iswblank
+    These functions are generacted from the character database named
+    UnicodeData.txt available at www.unicode.org
+  - malloc/free/realloc from Doug Lea's implementation
+
+* a minimal libgcc with
+  __divdi3, __moddi3, __udivdi3, __umoddi3
+  extracted from libgcc on the build system
+
+* several functions from libgmp, extracted from libgmp.a of the build
+  system; ad-hoc replacements are provided for assert.o and memory.o
+  to remove some dependencies.
+
+* math functions from Sun Microsystems' public domain math library
+
+We also provide simple wrappers for
+fprintf, stderr, stdout, fflush, fprintf, fwrite, fputc, fputs, fopen
+in order to build RTS with debugging option enabled.
+
+We say that C code (including the RTS, boot code, and parts of the
+interrupt handling code) is executed in the "C land", which has its
+own explicitly managed heap (malloc/free), and uses conventions
+defined by the C compiler for function calls, etc.
+
+We say that Haskell code is executed in the "Haskell land", with its
+heap being managed by the RTS, and using the execution model of the
+RTS (STG).
+
+Although our goal is to minimize the amount of code running in C land,
+favoring Haskell code, data can be exchanged between this two worlds
+using primitive operations of the Haskell compiler or the Foreign
+Function Interface (FFI).
+
+Memory model
+------------
+
+hOp only supports IA32 (i.e., Intel's x86 family of processors), but
+is meant to eventually run of multiple architectures.  The remaining
+subsections of this section give IA32 specific details.
+
+hOp currently operates in protected mode with a flat address space
+(paging is disabled), and is limited to use only 32MB of memory (it
+will crash miserably if you have less memory; adding code to detect
+the amount of available memory is future work).
+
+------------ 0x00000000 0
+ Interrupt
+  vectors
+------------ 0x00000400 1kB
+  C stack
+------------ 0x000A0000 640kB
+ Video RAM
+ and BIOS
+------------ 0x00100000 1MB
+ hOp kernel
+------------ 0x00400000 4MB
+  C heap
+------------ 0x00800000 8MB
+Haskell heap
+------------ 0x02000000 32MB
+
+The low level interface to the C heap is a trivial implementation of
+the standard Unix system call sbrk(2).  The high level interface uses
+Doug Lea's malloc.
+
+The Haskell heap is divided in 1MB blocks, which are handed out as
+needed to the RTS to be managed by the garbage collector.  The C
+land functions MBlock_init() and getMBlocks() manage a static
+variable pointing to the next 1MB block start address.
+
+Interrupt handling
+------------------
+
+* Each interrupt handler runs in its own Haskell thread.
+* These threads, wrapped in StablePtrs, are registered in a global
+  array "irqHandlerThreads" which resides in C land.
+* A new blocked state "BlockedWaitingInterrupts" was added.
+* In order to register a thread as an handler for a given IRQ,
+  a new PrimOp, registerForIRQ#, was added.  It creates a new StablePtr
+  for the current thread, update the global array, enable the IRQ and
+  put the thread in blocked state, waiting for interrupts.
+* Another new PrimOp, waitNextInterrupt#, is used after handling an
+  interrupt to sends a specific End Of Interrupt to the controller and
+  block the thread again until the next IRQ. 
+* When an interrupt occurs, the C handler examines the irqHandlerThreads
+  array; if a thread was registered, it is unblocked and a context switch
+  is requested (and will occur when control is next passed to the Haskell
+  scheduler).
+
+This interrupt handling model was the easiest to implement but it has
+some major drawbacks:
+
+* The current garbage collector is neither concurrent nor incremental,
+  which could lead to severe loss of interrupt during a long garbage
+  collection.
+* It relies on the ability of the i8259A programmable interrupt
+  controller (PIC) to accept Specific End Of Interrupt signals.
+  This feature may not be available on other PICs.
+* The current Haskell scheduler does not support multiple priority
+  levels; many threads running concurrently could delay handling an
+  interrupt for a long time.
+
+We plan to improve this aspect in future versions.
+
+Boot process
+------------
+
+GRUB already takes care of setting up x86 protected mode, which makes
+the boot process easier.
+
+------- C land
+start.S   | Load static, flat-memory GDT (segment descriptors)
+          | Initialize the memory to 0xCC (IA32 breakpoint instruction)
+          | Initialize the C stack
+          | Jump to c_start
+c_start.c | Initialize PIC (IRQs 0-15 mapped to interrupts 0x20-0x2F)
+          | Initialize IDT (interrupt vectors)
+          | Initialize Haskell block allocator (MBlock_init)
+          | Pass control to the RTS
+------- Haskell land
+Main.hs   | Start a console driver which handles a basic x86 text console
+          | Start a keyboard controller
+          | Start an idle thread
+          | Bind the keyboard and console driver to a simple Readline clone
+          |     which allows shell-like interaction with the system
+

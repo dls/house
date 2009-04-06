@@ -1,0 +1,32 @@
+This file contains testing information for the L4/Osker component 
+of House.
+
+-------------------------------------------------------------------
+Program:    alt
+Tests:      simple IPC/thread creation
+Invokation: "osker alt"
+
+Expected output:
+alt: module 10000000
+I am the sender
+I am the receiver
+I just sent 0
+I just received 0 from 3, total is 0
+I just sent 1
+I just received 1 from 3, total is 1
+I just sent 2
+I just received 2 from 3, total is 3
+I just sent 3
+I just received 3 from 3, total is 6
+I just sent 4
+I just received 4 from 3, total is 10
+I just sent 5
+I just received 5 from 3, total is 15
+I just sent 6
+I just received 6 from 3, total is 21
+I just sent 7
+I just received 7 from 3, total is 28
+I just sent 8
+I just received 8 from 3, total is 36
+I just send 9
+I just received 9 from 3, total is 45

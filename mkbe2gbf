@@ -1,0 +1,109 @@
+#!/bin/sh
+# mkbe2gbf: make bare ext2 grub boot floppy
+# by Dan Kegel, http://kegel.com, Oct 2003
+# Released under GPL
+
+
+if test $# != 4; then
+    echo "Script to demonstrate creating a bootable floppy image using GRUB and genext2fs 
+without root."
+    echo "Normally, one uses an initramdisk when booting from floppy, so this script is 
+mostly for fun."
+    echo "Usage:"
+    echo "  mkbe2gbf directory-to-pickle desired-output-file floppy-size-in-kb 
+path-to-grub-files"
+    echo "Note: genext2fs and grub must be on the PATH,"
+    echo "and the kernel should be in /boot/bzImage, and have been compiled with EXT2 and 
+without INITRD."
+    exit 1
+fi
+
+
+DIR=$1; shift
+IMAGE=$1; shift
+SIZE=$1; shift
+GRUBDIR=$1; shift
+
+
+TMPDIR=/tmp/mkboot.dir.$$
+TMPDEVLIST=/tmp/mkboot.devlist.$$
+
+
+if test ! -f $GRUBDIR/stage1; then
+   echo "Directory $GRUBDIR does not contain file stage1.  Please specify correct path to 
+GRUB files."
+   exit 1
+fi
+
+
+if ! mkdir $TMPDIR; then
+   echo "Failed to create temporary directory $TMPDIR!"
+   exit 1
+fi
+
+set -x -e
+
+
+# List devices genext2fs should create.
+# This generic set of devices should do for most people; more can be created after boot if needed.
+# I bet you could get by with a lot less.
+# The format is for the newer genext2fs, i.e.
+# http://ftp.debian.org/debian/pool/main/g/genext2fs/genext2fs-1.3.orig.tar.gz as patched by
+# http://www.uclibc.org/cgi-bin/cvsweb/buildroot/sources/genext2fs.patch
+# (See also http://groups.google.com/groups?selm=ucy95yoxrv.fsf%40habanero.picante.com for alternate approach)
+# <path>      <type> <mode>   <uid>   <gid>   <major> <minor> <start> <inc>   <count>
+cat > $TMPDEVLIST << _EOF_
+/dev/ram0	b	640	0	0	1	0
+/dev/mem	c	640	0	0	1	1
+/dev/kmem	c	640	0	0	1	2
+/dev/null	c	640	0	0	1	3
+/dev/zero	c	640	0	0	1	5
+/dev/random	c	640	0	0	1	8
+/dev/urandom	c	640	0	0	1	9
+/dev/ttyS0	c	640	0	0	4	64
+/dev/console	c	640	0	0	5	1
+/dev/ptmx	c	640	0	0	5	2
+/dev/pts/0	c	640	0	0	136	0
+_EOF_
+
+
+# Copy input directory to temporary directory and add grub files
+(cd $DIR; find . -print0 | cpio -0pmd $TMPDIR)
+mkdir -p $TMPDIR/dev
+mkdir -p $TMPDIR/dev/pts
+mkdir -p $TMPDIR/boot/grub
+test -f $TMPDIR/boot/grub/stage1 || cp $GRUBDIR/stage1 $TMPDIR/boot/grub
+test -f $TMPDIR/boot/grub/stage2 || cp $GRUBDIR/stage2 $TMPDIR/boot/grub
+
+
+# This section's a bit silly; it just creates the demo grub boot menu.
+if test ! -f $TMPDIR/boot/grub/grub.conf; then
+   if test ! -f $TMPDIR/kernel; then
+        echo "Can't find kernel."
+        exit 1
+   fi
+   # Note: root=fd0 fails, it thinks it's a hex number, must use /dev/fd0!
+   # OK, this is silly, nobody really uses a floppy as a root device, but hey, it's neat you can.
+   cat > $TMPDIR/boot/grub/grub.conf <<_EOF_
+title   hOp
+root    (fd0)
+kernel  /kernel
+_EOF_
+   # grub actually reads menu.lst, not grub.conf
+   ln -s grub.conf $TMPDIR/boot/grub/menu.lst
+fi
+
+
+# Create the image and populate it using genext2fs
+# Don't reserve any blocks for the superuser.
+genext2fs -m 0 -d $TMPDIR -b $SIZE $IMAGE
+
+
+# FIXME: use $GRUBDIR/grub ?  We want one that runs on the build machine, not the target...
+/sbin/grub --device-map=/dev/null <<_EOF_
+device (fd0) $IMAGE
+root (fd0)
+setup (fd0)
+_EOF_
+
+rm -rf $TMPDIR $TMPDEVLIST

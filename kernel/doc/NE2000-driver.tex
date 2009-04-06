@@ -1,0 +1,215 @@
+\documentclass{article}
+\usepackage{url}
+
+\begin{document}
+
+This note describes the process of writing a driver for an NE2000
+compatible \cite{NE2000} network card in the programming language Haskell 
+\cite{Haskell}.  The driver was written as a part of a very small OS kernel 
+called ``House'' \cite{House}.  ``House'' currently 
+\footnote{Spring 2005} only runs on x86 hardware, 
+and a some of the details here are x86 specific.
+
+\section{Programming the card}
+
+A programmer communicates with the NE2000 hardware via a number of IO ports.
+The IO ports are all relative to a base IO address.  
+The base address is either fixed, or can be discovered via the PCI 
+configuration space \cite{LinuxDeviceDrivers} for PCI cards.
+
+``House'' provides primitive operations to read from, and write to IO ports:
+\begin{verbatim}
+outB :: Port -> Word8 -> IO ()
+inB  :: Port -> IO Word8
+\end{verbatim}
+There are similar operations to read and write ports of different sizes.
+
+We use a reader (also known as environment) monad transformer on top of
+the IO monad to store the base address for the IO ports of the network card:
+\begin{verbatim}
+type Comp = ReaderT Port IO
+\end{verbatim}
+
+Now we can program the card using the appropriate IO ports:
+\begin{verbatim}
+setReg         :: Word8 -> Word8 -> Comp ()
+setReg addr val = do base <- ask
+                     lift (outB (base + addr) val)
+getReg addr     = do base <- ask
+                     lift (inB (base + addr))
+\end{verbatim}
+
+The card is programmed by reading and writing to the first 16 IO ports 
+starting at the base address.  Thus, a more accurate type for the operations 
+above is:
+\begin{verbatim}
+setReg         :: Word4 -> Word8 -> Comp ()
+\end{verbatim}
+Unfortunately there is no \verb#Word4# type, 
+which is why we chose the more permissive type.
+
+The first register (at offset \verb#0x00#) is a special register called 
+the {\em command register}.  It is used for two purposes:  
+to determines the meaning of the next 15 registers, and to make the card
+perform different operations, such as transmit a packet for example.
+First we concentrate on its effect on the other registers.
+
+Conceptually an NE2000 compatible card has 35 different registers 
+(although not all of them are used), that are accessed via the IO ports 
+at offsets between \verb#0x01# and \verb#0x0F#.  
+The registers are split into three {\em pages}.  
+The register that is affected by writing to the corresponding port depends 
+on the current page.  The current page can be accessed or set by modifying 
+bits 6 and 7 in the command register.  For example, setting bit 6 to 1, 
+and bit 7 to 0, results in turning to the second page of registers
+(the first page is 0).  Some cards have support for a forth page of registers.
+This hardware design makes it quite easy to forget to turn to the correct 
+page before accessing a register.
+
+Instead of using the low-level \verb#setReg# and \verb#getReg# functions 
+to program the card, we implemented a number of functions to read and write 
+the concrete registers of the card.  The functions are all similar to the 
+following, except for the types as we shell describe shortly.
+\begin{verbatim}
+setBoundary   :: Word8 -> Comp ()
+setBoundary x  = setReg 0x03 x
+\end{verbatim}
+
+An alternative approach would have been to define some names that correspond 
+to the offsets of the registers, and use \verb#setReg# and \verb#getReg# 
+to manipulate them.  This approach is not very nice for a number of reasons.  
+
+First, not all registers can be read and written.  For example, 
+the register at offset \verb#0x0E# in page 0, is a counter that keeps 
+statistics about how many packets with bad CRC were received.  
+This register can only be read.  This is not an arbitrary policy restriction, 
+the hardware simply does not provide means for this register to be modified.
+Writing to the corresponding port has the effect of modifying 
+{\em another} register.  There are also registers that can be written to, 
+but not read from, e.g. CLDA0 and CLDA1 are such registers.
+There are also registers that can be read and written, 
+but {\em not via the same port}.  For example, the data configuration register,
+is modified by writing to the port at offset \verb#0xE# in page 0, 
+but can be read by reading from the port at offset \verb#0x0E# in page 1.
+
+Another reason for choosing our approach is that some of the card's register 
+are 16 bit wide, while all the IO ports are 8 bit.  To read and write to 
+such registers we need to read and write to more than one port.
+
+Finally we already discussed that it is not only important that we access 
+the port at the correct offset, but we must also make sure that we have 
+the card in the correct page.  One possibility would be to make all the 
+functions that modify the registers turn to the correct page, before 
+accessing the ports.  This option could work, but is not very 
+attractive as accessing a number of registers in the same page 
+(which is very common) would issue many unnecessary commands to the card.
+Instead, we can add functions that instruct the card to turn to a 
+different page, and leave to the programmer to manually select pages.  
+This avoids unnecessary page turns, but it is very easy to forget to 
+turn to the correct page (as we discovered in the early stages of the 
+driver development).  What we would like is a solution where the programmer 
+turns the pages manually, but the program is {\em statically} checked to 
+ensure that when we access a register in some page, 
+the card has been previously turned to this page.
+
+We achieve this goal by using phantom types and {\em indexed monads}.
+We introduced a wrapper type around the \verb#Comp# monad:
+\begin{verbatim}
+newtype NE2000 s1 s2 a  = Do (Comp a)
+\end{verbatim}
+We think of values of type \verb#NE2000 s1 s2 a# as computations 
+(as we do with usual monads), except we use the phantom types 
+(we call them {\em indexes}) \verb#s1# and \verb#s2# to capture the state 
+of the card at the beginning and the end of the computation respectively.
+Clearly we can only capture parts of the state of the card that are under 
+our direct control, but this is exactly the case with page turning.
+
+Now we can lift the usual monadic operations to the new type:
+\begin{verbatim}
+neReturn :: a -> NE2000 s s a
+neReturn x  = Do (return x) 
+
+neBind :: NE2000 s1 s2 a -> (a -> NE2000 s2 s3 b) -> NE2000 s1 s3 b
+neBind (Comp m f) = Do (do a <- m
+                           let Comp m' = f a
+                           m')
+\end{verbatim}
+Notice that these types resemble very much the types of monadic operations,
+but are more general and do not fit the monadic framework. 
+We also expect the usual monadic laws (with generalized types) to hold.
+Such types have been observed before \cite{Wadler:1994,Wadler:2003}
+It is also possible to generalize some of the usual monads 
+(e.g. state, continuations, and others) to such more general types.  
+We refer to such ``monads'' as indexed monads.  We chose this name 
+because of the close relation with indexed categories \cite{CategoricalLogic} 
+--- an indexed category is like an indexed monad except 
+that the \verb#return# and \verb#join# (a close relative to \verb#bind#) 
+operations are required to be isomorphisms.
+
+We can use the \verb#NE2000# type to give the operations manipulating registers
+types that make it explicit what page the register lives in.  
+For example, we can write \verb#setBoundary# as follows:
+\begin{verbatim}
+setBoundary  :: Word8 -> NE2000 Page0 Page0 ()
+setBoundary x = Do (setReg 0x03 x)
+\end{verbatim}
+In the example \verb#Page0# is a type with a single element.
+Now it is clear that we can only execute the \verb#setBoundary# 
+operation when we are in page 0, and furthermore we are asserting that 
+after the execution of \verb#setBoundary# we are still going to be in page 0.  
+The type \verb#NE2000# acts as a Hoare triple, asserting properties of the 
+state of the card before and after the execution of the computation.
+We have to be careful when defining the basic operations 
+(e.g. \verb#setBoundary#) as they act as axioms --- there is nothing in the 
+actual computation that forces the type we wrote in the signature.  
+In writing the type signature the programmer asserts some knowledge that 
+they have about how the card works.  
+
+To change to a new page we would like an operation of a type similar to 
+this one:
+\begin{verbatim}
+turnToPage :: newPage -> NE2000 oldPage newPage ()
+\end{verbatim}
+
+To define such a function we need to establish a connection between the
+types \verb#Page0#, \verb#Page1#, etc, and the concrete values that need to be written in the
+command register.  We can achieve this with a simple type class trick:
+\begin{verbatim}
+class Page t        where asInt :: t -> Int
+instance Page Page0 where asInt _ = 0
+instance Page Page1 where asInt _ = 1
+instance Page Page2 where asInt _ = 2
+\end{verbatim}
+Now if \verb#Page0# is the only element of type \verb#Page0# we can use
+\verb#asInt Page0# to refer to the bit pattern that we need to put in
+bits 6 and 7 of the command register.  
+The class above modifies the type \verb#turnToPage# like this:
+\begin{verbatim}
+turnToPage :: Page newPage => newPage -> NE2000 oldPage newPage ()
+\end{verbatim}
+This is not unreasonable, the constraint simply says, that we can only 
+use types that represent pages.  Now we can define \verb#turnToPage# like this:
+\begin{verbatim}
+turnToPage p :: Page newPage => newPage -> NE2000 oldPage newPage ()
+turnToPage p  = Do (do x <- getReg 0x00
+                       let y = (asInt p `shiftL` 6) .|. (0x03 .&. x)
+                       setReg 0x00 y)
+\end{verbatim}
+The lowest 2 bites of the command register indicate if the card is on or off,
+and we do not want to change this when we turn the page, 
+which is why we read the command registers.  If the card is on or off is 
+yet another candidate for something we can keep track of in the types, 
+and indeed we do this in our driver implementation.  Having this information 
+enables us to specify more constraints, for example, that we should only 
+write to some of the registers when the card is in the off state.
+Knowing if the card is in the on or off state also enables us to implement
+\verb#turnToPage# without reading the command register, we simply define
+it as an overloaded function that writes the correct thing in the 
+lowest two register of the card based on the type of the computation.
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}
+
+

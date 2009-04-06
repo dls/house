@@ -1,0 +1,443 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.Mutable</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.Mutable</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Mutable data</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3ARef"
+		>Ref</A
+		> = IORef</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3AHArray"
+		>HArray</A
+		> = IOArray</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3AHUArray"
+		>HUArray</A
+		> = IOUArray</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AnewRef"
+		>newRef</A
+		> :: a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> (<A HREF = "H.Mutable.html#t%3ARef"
+		>Ref</A
+		> a)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmodifyRef"
+		>modifyRef</A
+		> :: <A HREF = "H.Mutable.html#t%3ARef"
+		>Ref</A
+		> a -&gt; (a -&gt; a) -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AreadRef"
+		>readRef</A
+		> :: <A HREF = "H.Mutable.html#t%3ARef"
+		>Ref</A
+		> a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> a</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AwriteRef"
+		>writeRef</A
+		> :: <A HREF = "H.Mutable.html#t%3ARef"
+		>Ref</A
+		> a -&gt; a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AnewArray"
+		>newArray</A
+		> :: (MArray a b IO, Ix c) =&gt; (c, c) -&gt; b -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> (a c b)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AreadArray"
+		>readArray</A
+		> :: (MArray a b IO, Ix c) =&gt; a c b -&gt; c -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> b</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AwriteArray"
+		>writeArray</A
+		> :: (MArray a b IO, Ix c) =&gt; a c b -&gt; c -&gt; b -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3AH"
+		>H</A
+		> a</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3ARef"
+	  ></A
+	  ><B
+	  >Ref</B
+	  > = IORef</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3AHArray"
+	  ></A
+	  ><B
+	  >HArray</B
+	  > = IOArray</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3AHUArray"
+	  ></A
+	  ><B
+	  >HUArray</B
+	  > = IOUArray</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AnewRef"
+	  ></A
+	  ><B
+	  >newRef</B
+	  > :: a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > (<A HREF = "H.Mutable.html#t%3ARef"
+	  >Ref</A
+	  > a)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmodifyRef"
+	  ></A
+	  ><B
+	  >modifyRef</B
+	  > :: <A HREF = "H.Mutable.html#t%3ARef"
+	  >Ref</A
+	  > a -&gt; (a -&gt; a) -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AreadRef"
+	  ></A
+	  ><B
+	  >readRef</B
+	  > :: <A HREF = "H.Mutable.html#t%3ARef"
+	  >Ref</A
+	  > a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > a</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AwriteRef"
+	  ></A
+	  ><B
+	  >writeRef</B
+	  > :: <A HREF = "H.Mutable.html#t%3ARef"
+	  >Ref</A
+	  > a -&gt; a -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AnewArray"
+	  ></A
+	  ><B
+	  >newArray</B
+	  > :: (MArray a b IO, Ix c) =&gt; (c, c) -&gt; b -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > (a c b)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AreadArray"
+	  ></A
+	  ><B
+	  >readArray</B
+	  > :: (MArray a b IO, Ix c) =&gt; a c b -&gt; c -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > b</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AwriteArray"
+	  ></A
+	  ><B
+	  >writeArray</B
+	  > :: (MArray a b IO, Ix c) =&gt; a c b -&gt; c -&gt; b -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3AH"
+	  ></A
+	  ><B
+	  >H</B
+	  > a</TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "ndoc"
+	      >The Hardware Monad</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Functor <A HREF = "H.Mutable.html#t%3AH"
+		      >H</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Monad <A HREF = "H.Mutable.html#t%3AH"
+		      >H</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A HREF = "H.Monad.html#t%3ALiftH"
+		      >LiftH</A
+		      > <A HREF = "H.Mutable.html#t%3AH"
+		      >H</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

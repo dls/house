@@ -1,0 +1,83 @@
+LICENSE INFORMATION
+
+This package includes files from a number sources, made available under
+a number of different licences.
+
+	hOp and supporting files: see license below
+	Gadgets: see license below 
+	GHC 6.8.2: see http://www.haskell.org/ghc/license.html
+
+Some files in this distribution contain original work by members of the
+Programatica team and are Copyright (c) 2005 The Programatica Project. These
+are released under the following license:
+
+Redistribution and use in source and binary forms, with or
+without modification, are permitted provided that the following
+conditions are met:
+
+- Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+- Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following
+  disclaimer in the documentation and/or other materials provided
+  with the distribution.
+
+- Neither the name of OGI or OHSU nor the names of its
+  contributors may be used to endorse or promote products derived
+  from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--------------------------------------------------------------------------------
+--- Gadgets License ------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+Original authors: Rob Noble and Colin Runciman, York University
+
+Port to Concurrent Haskell: Thomas Hallgren
+
+Gadgets is distributed as freeware for academic use only, without
+warranty of any kind.
+
+--------------------------------------------------------------------------------
+--- License from the hOp distribution ------------------------------------------
+--------------------------------------------------------------------------------
+
+All files that are distributed as part of this project but are otherwise
+unmarked are offered under the following copyright and license:
+
+  Copyright 2004 Sébastien Carlier and Jérémy Bobbio
+
+  You may freely use, modify, and distribute this software, as well as
+  modified versions and derived works of this software, but at your own
+  risk.  NO WARRANTY is given; not even the implied warranty of
+  merchantability or fitness for a particular purpose.
+
+Exceptions:
+
+* Files in support/m:
+
+   Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+  
+   Developed at SunPro, a Sun Microsystems, Inc. business.
+   Permission to use, copy, modify, and distribute this
+   software is freely granted, provided that this notice
+   is preserved.
+
+* Files in support/c, see support/c/LICENSE.
+
+* kernel/cbits/video.c, kernel/cbits/gprintf.c in public domain
+

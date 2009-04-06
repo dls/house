@@ -1,0 +1,444 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.PhysicalMemory</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.PhysicalMemory</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Physical Pages and Addresses (section 3.1 in the paper)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3APAddr"
+		>PAddr</A
+		> = (<A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		>PhysPage</A
+		>, <A HREF = "H.PhysicalMemory.html#t%3APOffset"
+		>POffset</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3APhysPage"
+		>PhysPage</A
+		> </TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3APOffset"
+		>POffset</A
+		> = Word12</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3ApageSize"
+		>pageSize</A
+		> :: Int</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AgetPAddr"
+		>getPAddr</A
+		> :: <A HREF = "H.PhysicalMemory.html#t%3APAddr"
+		>PAddr</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> Word8</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AsetPAddr"
+		>setPAddr</A
+		> :: <A HREF = "H.PhysicalMemory.html#t%3APAddr"
+		>PAddr</A
+		> -&gt; Word8 -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AallocPhysPage"
+		>allocPhysPage</A
+		> :: <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> (Maybe <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		>PhysPage</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AfreePhysPage"
+		>freePhysPage</A
+		> :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		>PhysPage</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AfromPhysPage"
+		>fromPhysPage</A
+		> :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		>PhysPage</A
+		> -&gt; <A HREF = "H.Pages.html#t%3APage"
+		>Page</A
+		> Word8</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3APAddr"
+	  ></A
+	  ><B
+	  >PAddr</B
+	  > = (<A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+	  >PhysPage</A
+	  >, <A HREF = "H.PhysicalMemory.html#t%3APOffset"
+	  >POffset</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>The type <TT
+	  >PAddr</TT
+	  > represents byte addresses in the machine's raw
+physical memory. It is composed from an abstract type <TT
+	  >PhysPage</TT
+	  >,
+representing a physical page, and a numeric <TT
+	  >POffset</TT
+	  >, representing the offset
+of a byte within that page.
+</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3APhysPage"
+	  ></A
+	  ><B
+	  >PhysPage</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "ndoc"
+	      ><TT
+		>PhysPage</TT
+		>s correspond to physical pages that are available
+for accesses by user-mode processes, which form a subset of the raw
+physical memory installed in the machine. </TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Eq <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		      >PhysPage</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+		      >PhysPage</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3APOffset"
+	  ></A
+	  ><B
+	  >POffset</B
+	  > = Word12</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>The <TT
+	  >POffset</TT
+	  > type behaves just like a standard unsigned integer type (e.g.
+<TT
+	  >Word8</TT
+	  >) with bounds <TT
+	  >[0..pageSize-1]</TT
+	  >, except that arithmetic operations
+are checked for overflow rather than silently &quot;wrapping around.&quot;
+</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3ApageSize"
+	  ></A
+	  ><B
+	  >pageSize</B
+	  > :: Int</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AgetPAddr"
+	  ></A
+	  ><B
+	  >getPAddr</B
+	  > :: <A HREF = "H.PhysicalMemory.html#t%3APAddr"
+	  >PAddr</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > Word8</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>The contents of individual addresses can be read using <TT
+	  >getPAddr</TT
+	  >.</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AsetPAddr"
+	  ></A
+	  ><B
+	  >setPAddr</B
+	  > :: <A HREF = "H.PhysicalMemory.html#t%3APAddr"
+	  >PAddr</A
+	  > -&gt; Word8 -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>The contents of individual addresses can be written using <TT
+	  >setPAddr</TT
+	  >.</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AallocPhysPage"
+	  ></A
+	  ><B
+	  >allocPhysPage</B
+	  > :: <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > (Maybe <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+	  >PhysPage</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>New physical pages are obtained using <TT
+	  >allocPhysPage</TT
+	  >,
+which returns <TT
+	  >Nothing</TT
+	  > if no more pages are available.
+Each allocated page is distinct. </TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AfreePhysPage"
+	  ></A
+	  ><B
+	  >freePhysPage</B
+	  > :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+	  >PhysPage</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AfromPhysPage"
+	  ></A
+	  ><B
+	  >fromPhysPage</B
+	  > :: <A HREF = "H.PhysicalMemory.html#t%3APhysPage"
+	  >PhysPage</A
+	  > -&gt; <A HREF = "H.Pages.html#t%3APage"
+	  >Page</A
+	  > Word8</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

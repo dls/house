@@ -1,0 +1,19 @@
+diff -u ghc-xen/rts/Exception.cmm ghc-house/rts/Exception.cmm
+--- ghc-xen/rts/Exception.cmm	2007-12-10 18:11:31.000000000 +0000
++++ ghc-house/rts/Exception.cmm	2008-02-14 00:31:48.000000000 +0000
+@@ -412,6 +412,7 @@
+       }          
+     }
+ 
++#ifdef ALLOW_INTERPRETER
+     // After stripping the stack, see whether we should break here for
+     // GHCi (c.f. the -fbreak-on-exception flag).  We do this after
+     // stripping the stack for a reason: we'll be inspecting values in
+@@ -441,6 +442,7 @@
+             jump RET_LBL(stg_ap_pppv);
+         }
+     }
++#endif
+ 
+     if (frame_type == STOP_FRAME) {
+ 	/*

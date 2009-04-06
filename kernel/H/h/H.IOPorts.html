@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.IOPorts</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.IOPorts</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	><P
+	  >Programmed IO (section 3.4 in the paper)
+</P
+	  ><P
+	  >Many PC devices (including timers, the CMOS and real-time clock
+devices, the keyboard and mouse, network interfaces, etc.)  are
+controlled by reading and writing data and control information to
+specified <EM
+	    >ports</EM
+	    > via special <TT
+	    >in</TT
+	    > and <TT
+	    >out</TT
+	    > instructions.  These are
+available through <TT
+	    ><A HREF = "H.Monad.html#t%3AH"
+	      >H</A
+	      ></TT
+	    > via the functions exported from this module.
+</P
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3APort"
+		>Port</A
+		> = Word16</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AinB"
+		>inB</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> Word8</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AinW"
+		>inW</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> Word16</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AinL"
+		>inL</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> Word32</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AoutB"
+		>outB</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; Word8 -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AoutW"
+		>outW</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; Word16 -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AoutL"
+		>outL</A
+		> :: <A HREF = "H.IOPorts.html#t%3APort"
+		>Port</A
+		> -&gt; Word32 -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

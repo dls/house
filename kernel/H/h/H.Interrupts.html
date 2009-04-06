@@ -1,0 +1,657 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.Interrupts</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.Interrupts</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Interrupts (section 3.4 in the paper)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><SPAN CLASS = "keyword"
+		      >data</SPAN
+		      > <A HREF = "#t%3AIRQ"
+		      >IRQ</A
+		      > </TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  >= <A HREF = "#v%3AIRQ0"
+			    >IRQ0</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ1"
+			    >IRQ1</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ2"
+			    >IRQ2</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ3"
+			    >IRQ3</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ4"
+			    >IRQ4</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ5"
+			    >IRQ5</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ6"
+			    >IRQ6</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ7"
+			    >IRQ7</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ8"
+			    >IRQ8</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ9"
+			    >IRQ9</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ10"
+			    >IRQ10</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ11"
+			    >IRQ11</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ12"
+			    >IRQ12</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ13"
+			    >IRQ13</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ14"
+			    >IRQ14</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AIRQ15"
+			    >IRQ15</A
+			    ></TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AenableIRQ"
+		>enableIRQ</A
+		> :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+		>IRQ</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AdisableIRQ"
+		>disableIRQ</A
+		> :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+		>IRQ</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AeoiIRQ"
+		>eoiIRQ</A
+		> :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+		>IRQ</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AenableInterrupts"
+		>enableInterrupts</A
+		> :: <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AdisableInterrupts"
+		>disableInterrupts</A
+		> :: <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AinstallHandler"
+		>installHandler</A
+		> :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+		>IRQ</A
+		> -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> () -&gt; <A HREF = "H.Monad.html#t%3AH"
+		>H</A
+		> ()</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3AIRQ"
+	  ></A
+	  ><B
+	  >IRQ</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ0"
+		      ></A
+		      ><B
+		      >IRQ0</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ1"
+		      ></A
+		      ><B
+		      >IRQ1</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ2"
+		      ></A
+		      ><B
+		      >IRQ2</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ3"
+		      ></A
+		      ><B
+		      >IRQ3</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ4"
+		      ></A
+		      ><B
+		      >IRQ4</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ5"
+		      ></A
+		      ><B
+		      >IRQ5</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ6"
+		      ></A
+		      ><B
+		      >IRQ6</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ7"
+		      ></A
+		      ><B
+		      >IRQ7</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ8"
+		      ></A
+		      ><B
+		      >IRQ8</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ9"
+		      ></A
+		      ><B
+		      >IRQ9</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ10"
+		      ></A
+		      ><B
+		      >IRQ10</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ11"
+		      ></A
+		      ><B
+		      >IRQ11</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ12"
+		      ></A
+		      ><B
+		      >IRQ12</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ13"
+		      ></A
+		      ><B
+		      >IRQ13</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ14"
+		      ></A
+		      ><B
+		      >IRQ14</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AIRQ15"
+		      ></A
+		      ><B
+		      >IRQ15</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Ord <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Eq <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Bounded <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Enum <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    >Ix <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AenableIRQ"
+	  ></A
+	  ><B
+	  >enableIRQ</B
+	  > :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+	  >IRQ</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Enable an individual IRQ</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AdisableIRQ"
+	  ></A
+	  ><B
+	  >disableIRQ</B
+	  > :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+	  >IRQ</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Disable an individual IRQ</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AeoiIRQ"
+	  ></A
+	  ><B
+	  >eoiIRQ</B
+	  > :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+	  >IRQ</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>After an interrupt from a given IRQ, further interrupts from that
+IRQ are disabled until the processor issues an &quot;end-of-interrupt&quot;
+acknowledgement with the <TT
+	  >eoiIRQ</TT
+	  > operation. </TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AenableInterrupts"
+	  ></A
+	  ><B
+	  >enableInterrupts</B
+	  > :: <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Enable interrupts globally</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AdisableInterrupts"
+	  ></A
+	  ><B
+	  >disableInterrupts</B
+	  > :: <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Disable interrupts globally</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AinstallHandler"
+	  ></A
+	  ><B
+	  >installHandler</B
+	  > :: <A HREF = "H.Interrupts.html#t%3AIRQ"
+	  >IRQ</A
+	  > -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > () -&gt; <A HREF = "H.Monad.html#t%3AH"
+	  >H</A
+	  > ()</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

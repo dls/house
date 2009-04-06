@@ -1,0 +1,12 @@
+diff -u ghc-xen/driver/mangler/ghc-asm.lprl ghc-house/driver/mangler/ghc-asm.lprl
+--- ghc-xen/driver/mangler/ghc-asm.lprl	2008-05-29 21:34:09.000000000 +0000
++++ ghc-house/driver/mangler/ghc-asm.lprl	2008-02-13 08:01:31.000000000 +0000
+@@ -73,7 +73,7 @@
+     }
+ }
+ 
+-if ( $TargetPlatform =~ /^i386-.*-xen/ ) {
++if ( $TargetPlatform =~ /^i386-.*-house/ ) {
+    $TargetPlatform = "i386-unknown-linux";
+ }
+ 

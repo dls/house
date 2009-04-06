@@ -1,0 +1,419 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.Grub</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.Grub</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      ><B
+		>Contents</B
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD
+	      ><DL
+		><DT
+		  ><A HREF = "#1"
+		    >Deprecated functions</A
+		    ></DT
+		  ></DL
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>Access to information provided by Grub in accordance with the
+multiboot specification, see
+<A HREF = "http://www.gnu.org/software/grub/manual/multiboot/html_node/Boot-information-format.html"
+	  >http://www.gnu.org/software/grub/manual/multiboot/html_node/Boot-information-format.html</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmoduleName"
+		>moduleName</A
+		> :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> String</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmoduleCount"
+		>moduleCount</A
+		> :: <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> Int</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmoduleRegion"
+		>moduleRegion</A
+		> :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> <A HREF = "H.MemRegion.html#t%3AMemRegion"
+		>MemRegion</A
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3AMemInfo"
+		>MemInfo</A
+		>  = <A HREF = "#v%3AMem"
+		>Mem</A
+		> {<TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Alower"
+		      >lower</A
+		      > :: Int</TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Aupper"
+		      >upper</A
+		      > :: Int</TD
+		    ></TR
+		  ></TABLE
+		>}</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmemInfo"
+		>memInfo</A
+		> :: <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> (Maybe <A HREF = "H.Grub.html#t%3AMemInfo"
+		>MemInfo</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmoduleStart"
+		>moduleStart</A
+		> :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> (<A HREF = "H.AdHocMem.html#t%3APtr"
+		>Ptr</A
+		> Word8)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AmoduleEnd"
+		>moduleEnd</A
+		> :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+		>H</A
+		> (<A HREF = "H.AdHocMem.html#t%3APtr"
+		>Ptr</A
+		> Word8)</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmoduleName"
+	  ></A
+	  ><B
+	  >moduleName</B
+	  > :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > String</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmoduleCount"
+	  ></A
+	  ><B
+	  >moduleCount</B
+	  > :: <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > Int</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmoduleRegion"
+	  ></A
+	  ><B
+	  >moduleRegion</B
+	  > :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > <A HREF = "H.MemRegion.html#t%3AMemRegion"
+	  >MemRegion</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3AMemInfo"
+	  ></A
+	  ><B
+	  >MemInfo</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "5" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AMem"
+		      ></A
+		      ><B
+		      >Mem</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body" COLSPAN = "2"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Alower"
+			    ></A
+			    ><B
+			    >lower</B
+			    > :: Int</TD
+			  ><TD CLASS = "rdoc"
+			  >size in KB of memory starting at 0, max 640KB</TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Aupper"
+			    ></A
+			    ><B
+			    >upper</B
+			    > :: Int</TD
+			  ><TD CLASS = "rdoc"
+			  >size in KB of memory starting at 1MB</TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.Grub.html#t%3AMemInfo"
+		      >MemInfo</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmemInfo"
+	  ></A
+	  ><B
+	  >memInfo</B
+	  > :: <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > (Maybe <A HREF = "H.Grub.html#t%3AMemInfo"
+	  >MemInfo</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	><TT
+	  >memInfo</TT
+	  > returns the size of the physical memory installed</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	><A NAME = "1"
+	  >Deprecated functions</A
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmoduleStart"
+	  ></A
+	  ><B
+	  >moduleStart</B
+	  > :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > (<A HREF = "H.AdHocMem.html#t%3APtr"
+	  >Ptr</A
+	  > Word8)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AmoduleEnd"
+	  ></A
+	  ><B
+	  >moduleEnd</B
+	  > :: Int -&gt; <A HREF = "H.AdHocMem.html#t%3AH"
+	  >H</A
+	  > (<A HREF = "H.AdHocMem.html#t%3APtr"
+	  >Ptr</A
+	  > Word8)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>

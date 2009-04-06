@@ -1,0 +1,118 @@
+Additional info on House.
+
+This README extends and modifies the original hOp README.
+In cases of disagreement, this document governs.
+
+See also http://www.cse.ogi.edu/~hallgren/House/
+
+Building
+========
+
+"house" uses graphic video or text video.
+
+To get "house" running in graphic mode, you'll need 
+to use a GRUB that supports VBE, and include the command
+
+vbeset 0x117
+
+in your grub boot sequence.
+
+Starting House
+==============
+
+House runs either on an emulator or
+on real hardware, booting from the hard disk (assuming
+you have grub installed there), from a floppy, or 
+via tftp using a grub-supported network card.
+
+To make House fit on an ordinary 1.44MB floppy, we zip it
+(grub decompresses it just fine).
+
+We have been using qemu (http://fabrice.bellard.free.fr/qemu/) as the emulator, 
+booting from the floppy image using:
+
+qemu -boot a -fda hOp.flp
+
+Qemu works fairly well, and provides some primitive debugging aids
+via the logging options.  But it is sometimes easier to please than
+real hardware; e.g., it seems to zero unitialized memory that causes
+bugs on the real hardware.
+
+We may want to experiment with other emulators; in particular, 
+bochs provides an auxiliary text output channel which may be useful
+for capturing debug output.
+
+Memory model
+------------
+
+House boots in protected mode with a flat address space and 
+just one code and data segment (privileged).   It currently
+uses a fixed 64MB of physical memory; there is code to read
+the amount of physical memory from the BIOS, but it is currently
+unused. 
+
+The physical address layout is as follows:
+
+------------ 0x00000000 0
+ Interrupt
+  vectors
+------------ 0x00000400 1KB
+  unused
+------------ 0x00090000 576KB
+  C stack
+------------ 0x0009f000 636KB
+  reserved
+------------ 0x000A0000 640Kb
+ ISA Video RAM
+ and BIOS
+------------ 0x00100000 1MB
+ house kernel
+  (+ "modules"
+w/ user code)
+------------ 0x00800000 8MB
+ kernel page 
+ tables
+------------ 0x00820000 8MB+128K
+  C heap
+------------ 0x00c20000 12MB+128K
+Haskell heap
+------------ 0x02000000 32MB
+User pdir/   
+ptable pages
+------------ 0x02400000 36MB
+User process 
+physical pages
+------------ 0x04000000 64MB
+...
+------------ 0xe0000000
+...
+VBE graphics  (32MB max size)
+frame buffer
+...
+------------ 0xffffffff
+
+
+Within c_start/main,
+it sets up user-mode code and data segments and a task segment,
+and initiates paging.  The initial kernel virtual page map is just a identity map
+over the entire physical address space (0-64MB), marked for R/W access
+in supervisor mode.  If VBE graphics are enabled,
+the graphics buffer (which actually lives at very high physical addresses)
+is remapped to a virtual address range immediately
+beyond the end of physical memory; it is required to fit in 32MB.
+
+When a user page table is created (by userspace/new_page_dir), it 
+gets a virtual memory map that is initially identical to the kernel map,
+including the "supervisor" access bits; hence this memory cannot be
+accessed by user mode code, but it can be accessed by the kernel even
+when the user page map is currently installed.   Additional virtual
+memory can be allocated (by map_page) at virtual addresses at or above
+0x10000000 (so they cannot conflict with kernel stuff).
+
+
+
+
+
+
+
+

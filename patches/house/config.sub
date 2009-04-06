@@ -1,0 +1,14 @@
+diff -u ghc-xen/config.sub ghc-house/config.sub
+--- ghc-xen/config.sub	2008-05-29 21:34:09.000000000 +0000
++++ ghc-house/config.sub	2008-02-13 08:01:25.000000000 +0000
+@@ -1244,8 +1244,8 @@
+ 	-linux*)
+ 		os=`echo $os | sed -e 's|linux|linux-gnu|'`
+ 		;;
+-    -xen*)
+-        os=-xen
++    -house*)
++        os=-house
+         ;;
+ 	-sunos5*)
+ 		os=`echo $os | sed -e 's|sunos5|solaris2|'`

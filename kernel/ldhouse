@@ -1,0 +1,32 @@
+
+# ldhouse - a linker script for House
+# Usage: to be invoked from ghc using "ghc -pgml ldhouse"
+
+TOP=${TOP-top}
+GHCTOP="${GHCTOP-$TOP/ghc-6.8.2}"
+SUPPORT="${SUPPORT-$TOP/support}"
+
+LDFLAGS1="-ufreeHaskellFunctionPtr -uErrorHdrHook -L$SUPPORT -L$GHCTOP/rts -L$GHCTOP/libraries/base/dist/build -L$GHCTOP/libraries/array/dist/build -L$GHCTOP/libraries/containers/dist/build -L$GHCTOP/libraries/mtl/dist/build -L$GHCTOP/libraries/packedstring/dist/build -L$GHCTOP/libraries/pretty/dist/build -static -x -estart -Ttext 0x100000"
+LDFLAGS2="-lHSrts -lHSbase-3.0.1.0 -lHSrts -lHSarray-0.1.0.0 -lHScontainers-0.1.0.1 -lHSmtl-1.1.0.0 -lHSpackedstring-0.1.0.0 -lHSpretty-1.0.0.0 -lHSbase-3.0.1.0 -lHSmtl-1.1.0.0 -ltiny_gmp -ltiny_m -ltiny_c -ltiny_gcc"
+
+#C_OBJS="cbits/start.o cbits/c_start.o cbits/gprintf.o cbits/gfx.o cbits/modules.o cbits/userspace.o cbits/fault.o cbits/util.o cbits/io.o cbits/video.o"
+
+# Collect object files and the name of the executable from the arguments
+# supplied by GHC. Ignore other arguments. Reverse order of C object files.
+objs=""
+c_objs=""
+while [ $# != 0 ] ; do
+  case "$1" in
+    cbits/*.o) c_objs="$1 $c_objs" ;;
+    *.o) objs="$objs $1" ;;
+    -o) objs="$objs $1 $2"; shift;;
+  esac
+  shift
+done
+
+# Put cbits/start.o at the very beginning - the multiboot header must be in
+# the first 8192 bytes of the OS image or else grub cannot boot it!
+c_objs=`echo -n 'cbits/start.o '; echo "$c_objs" | sed 's!cbits/start.o!!g'`
+
+#echo "$c_objs $objs"
+ld -s $LDFLAGS1 $c_objs $objs $LDFLAGS2

@@ -1,0 +1,898 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+  ><TITLE
+    >H.UserMode</TITLE
+    ><LINK HREF = "haddock.css" REL = "stylesheet" TYPE = "text/css"
+    ></HEAD
+  ><BODY
+  ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+    ><TR
+      ><TD CLASS = "topbar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><IMG SRC = "haskell_icon.gif" WIDTH = "16" HEIGHT = "16" ALT = " "
+		></TD
+	      ><TD CLASS = "title"
+	      >Hardware Monad Interface (work in progress)</TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "index.html"
+		>Contents</A
+		></TD
+	      ><TD CLASS = "topbut"
+	      ><A HREF = "doc-index.html"
+		>Index</A
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "modulebar"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD
+	      ><FONT SIZE = "6"
+		>H.UserMode</FONT
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Description</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	>User-space Execution (section 3.3 in the paper)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Synopsis</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3AContext"
+		>Context</A
+		>  = <A HREF = "#v%3AContext"
+		>Context</A
+		> {<TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Aedi"
+		      >edi</A
+		      >, <A HREF = "#v%3Aesi"
+		      >esi</A
+		      >, <A HREF = "#v%3Aebp"
+		      >ebp</A
+		      >, <A HREF = "#v%3Aesp"
+		      >esp</A
+		      >, <A HREF = "#v%3Aebx"
+		      >ebx</A
+		      >, <A HREF = "#v%3Aedx"
+		      >edx</A
+		      >, <A HREF = "#v%3Aecx"
+		      >ecx</A
+		      >, <A HREF = "#v%3Aeax"
+		      >eax</A
+		      >, <A HREF = "#v%3Aeip"
+		      >eip</A
+		      >, <A HREF = "#v%3Aeflags"
+		      >eflags</A
+		      > :: Word32</TD
+		    ></TR
+		  ></TABLE
+		>}</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><A HREF = "#v%3AexecContext"
+		>execContext</A
+		> :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+		>PageMap</A
+		> -&gt; <A HREF = "H.UserMode.html#t%3AContext"
+		>Context</A
+		> -&gt; <A HREF = "H.Mutable.html#t%3AH"
+		>H</A
+		> (<A HREF = "H.UserMode.html#t%3AInterrupt"
+		>Interrupt</A
+		>, <A HREF = "H.UserMode.html#t%3AContext"
+		>Context</A
+		>)</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><SPAN CLASS = "keyword"
+		      >data</SPAN
+		      > <A HREF = "#t%3AInterrupt"
+		      >Interrupt</A
+		      > </TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  >= <A HREF = "#v%3ADivideError"
+			    >DivideError</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ANMIInterrupt"
+			    >NMIInterrupt</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ABreakpoint"
+			    >Breakpoint</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AOverflow"
+			    >Overflow</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ABoundRangeExceeded"
+			    >BoundRangeExceeded</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AInvalidOpcode"
+			    >InvalidOpcode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ADeviceNotAvailable"
+			    >DeviceNotAvailable</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ADoubleFault"
+			    >DoubleFault</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AInvalidTSS"
+			    >InvalidTSS</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ASegmentNotPresent"
+			    >SegmentNotPresent</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AStackSegmentFault"
+			    >StackSegmentFault</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AGeneralProtection"
+			    >GeneralProtection</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3APageFault"
+			    >PageFault</A
+			    > <A HREF = "H.UserMode.html#t%3APageFaultErrorCode"
+			    >PageFaultErrorCode</A
+			    > <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+			    >VAddr</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AFPUError"
+			    >FPUError</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AAlignmentCheck"
+			    >AlignmentCheck</A
+			    > <A HREF = "H.UserMode.html#t%3AErrorCode"
+			    >ErrorCode</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AMachineCheck"
+			    >MachineCheck</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3ASIMDException"
+			    >SIMDException</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AExternalInterrupt"
+			    >ExternalInterrupt</A
+			    > <A HREF = "H.Interrupts.html#t%3AIRQ"
+			    >IRQ</A
+			    ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  >| <A HREF = "#v%3AProgrammedException"
+			    >ProgrammedException</A
+			    > Word8</TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>type</SPAN
+		> <A HREF = "#t%3AErrorCode"
+		>ErrorCode</A
+		> = Word32</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "s8"
+	      ></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "decl"
+	      ><SPAN CLASS = "keyword"
+		>data</SPAN
+		> <A HREF = "#t%3APageFaultErrorCode"
+		>PageFaultErrorCode</A
+		>  = <A HREF = "#v%3APageFaultErrorCode"
+		>PageFaultErrorCode</A
+		> {<TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3AuserMode"
+		      >userMode</A
+		      > :: Bool</TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Awrite"
+		      >write</A
+		      > :: Bool</TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "recfield"
+		    ><A HREF = "#v%3Aprotection"
+		      >protection</A
+		      > :: Bool</TD
+		    ></TR
+		  ></TABLE
+		>}</TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "section1"
+	>Documentation</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3AContext"
+	  ></A
+	  ><B
+	  >Context</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "ndoc"
+	      ><TT
+		>Context</TT
+		> describes the (non-memory) state of the processor, including
+the values of the program-accessible registers and control flags.
+This is the definition for the IA32 architecture. </TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "5" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AContext"
+		      ></A
+		      ><B
+		      >Context</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body" COLSPAN = "2"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Aedi"
+			    ></A
+			    ><B
+			    >edi</B
+			    >, <A NAME = "v%3Aesi"
+			    ></A
+			    ><B
+			    >esi</B
+			    >, <A NAME = "v%3Aebp"
+			    ></A
+			    ><B
+			    >ebp</B
+			    >, <A NAME = "v%3Aesp"
+			    ></A
+			    ><B
+			    >esp</B
+			    >, <A NAME = "v%3Aebx"
+			    ></A
+			    ><B
+			    >ebx</B
+			    >, <A NAME = "v%3Aedx"
+			    ></A
+			    ><B
+			    >edx</B
+			    >, <A NAME = "v%3Aecx"
+			    ></A
+			    ><B
+			    >ecx</B
+			    >, <A NAME = "v%3Aeax"
+			    ></A
+			    ><B
+			    >eax</B
+			    >, <A NAME = "v%3Aeip"
+			    ></A
+			    ><B
+			    >eip</B
+			    >, <A NAME = "v%3Aeflags"
+			    ></A
+			    ><B
+			    >eflags</B
+			    > :: Word32</TD
+			  ><TD CLASS = "rdoc"
+			  ></TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.UserMode.html#t%3AContext"
+		      >Context</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><A NAME = "v%3AexecContext"
+	  ></A
+	  ><B
+	  >execContext</B
+	  > :: <A HREF = "H.VirtualMemory.html#t%3APageMap"
+	  >PageMap</A
+	  > -&gt; <A HREF = "H.UserMode.html#t%3AContext"
+	  >Context</A
+	  > -&gt; <A HREF = "H.Mutable.html#t%3AH"
+	  >H</A
+	  > (<A HREF = "H.UserMode.html#t%3AInterrupt"
+	  >Interrupt</A
+	  >, <A HREF = "H.UserMode.html#t%3AContext"
+	  >Context</A
+	  >)</TD
+	></TR
+      ><TR
+      ><TD CLASS = "doc"
+	><P
+	  ><TT
+	    >execContext</TT
+	    > is the operator for executing code in a user address space.
+</P
+	  ><P
+	  >Invoking <TT
+	    >execContext</TT
+	    > installs the specified page map and context
+into the appropriate hardware registers and puts the processor into user mode. 
+User code then executes (starting at the <TT
+	    >eip</TT
+	    > recorded
+in the <TT
+	    ><A HREF = "H.UserMode.html#t%3AContext"
+	      >Context</A
+	      ></TT
+	    >) and can access the physical addresses visible to it
+through its page map.
+When user-mode execution is interrupted the processor records the
+new current context and returns to kernel mode; <TT
+	    >execContext</TT
+	    > then returns
+with that <TT
+	    ><A HREF = "H.UserMode.html#t%3AContext"
+	      >Context</A
+	      ></TT
+	    > and the nature of the <TT
+	    ><A HREF = "H.UserMode.html#t%3AInterrupt"
+	      >Interrupt</A
+	      ></TT
+	    >.
+</P
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3AInterrupt"
+	  ></A
+	  ><B
+	  >Interrupt</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ADivideError"
+		      ></A
+		      ><B
+		      >DivideError</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ANMIInterrupt"
+		      ></A
+		      ><B
+		      >NMIInterrupt</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ABreakpoint"
+		      ></A
+		      ><B
+		      >Breakpoint</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AOverflow"
+		      ></A
+		      ><B
+		      >Overflow</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ABoundRangeExceeded"
+		      ></A
+		      ><B
+		      >BoundRangeExceeded</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AInvalidOpcode"
+		      ></A
+		      ><B
+		      >InvalidOpcode</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ADeviceNotAvailable"
+		      ></A
+		      ><B
+		      >DeviceNotAvailable</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ADoubleFault"
+		      ></A
+		      ><B
+		      >DoubleFault</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AInvalidTSS"
+		      ></A
+		      ><B
+		      >InvalidTSS</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ASegmentNotPresent"
+		      ></A
+		      ><B
+		      >SegmentNotPresent</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AStackSegmentFault"
+		      ></A
+		      ><B
+		      >StackSegmentFault</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AGeneralProtection"
+		      ></A
+		      ><B
+		      >GeneralProtection</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3APageFault"
+		      ></A
+		      ><B
+		      >PageFault</B
+		      > <A HREF = "H.UserMode.html#t%3APageFaultErrorCode"
+		      >PageFaultErrorCode</A
+		      > <A HREF = "H.VirtualMemory.html#t%3AVAddr"
+		      >VAddr</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AFPUError"
+		      ></A
+		      ><B
+		      >FPUError</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AAlignmentCheck"
+		      ></A
+		      ><B
+		      >AlignmentCheck</B
+		      > <A HREF = "H.UserMode.html#t%3AErrorCode"
+		      >ErrorCode</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AMachineCheck"
+		      ></A
+		      ><B
+		      >MachineCheck</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3ASIMDException"
+		      ></A
+		      ><B
+		      >SIMDException</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AExternalInterrupt"
+		      ></A
+		      ><B
+		      >ExternalInterrupt</B
+		      > <A HREF = "H.Interrupts.html#t%3AIRQ"
+		      >IRQ</A
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3AProgrammedException"
+		      ></A
+		      ><B
+		      >ProgrammedException</B
+		      > Word8</TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.UserMode.html#t%3AInterrupt"
+		      >Interrupt</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >type</SPAN
+	  > <A NAME = "t%3AErrorCode"
+	  ></A
+	  ><B
+	  >ErrorCode</B
+	  > = Word32</TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "decl"
+	><SPAN CLASS = "keyword"
+	  >data</SPAN
+	  > <A NAME = "t%3APageFaultErrorCode"
+	  ></A
+	  ><B
+	  >PageFaultErrorCode</B
+	  > </TD
+	></TR
+      ><TR
+      ><TD CLASS = "body"
+	><TABLE CLASS = "vanilla" CELLSPACING = "0" CELLPADDING = "0"
+	  ><TR
+	    ><TD CLASS = "section4"
+	      >Constructors</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "5" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    ><A NAME = "v%3APageFaultErrorCode"
+		      ></A
+		      ><B
+		      >PageFaultErrorCode</B
+		      ></TD
+		    ><TD CLASS = "rdoc"
+		    ></TD
+		    ></TR
+		  ><TR
+		  ><TD CLASS = "body" COLSPAN = "2"
+		    ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		      ><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3AuserMode"
+			    ></A
+			    ><B
+			    >userMode</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Awrite"
+			    ></A
+			    ><B
+			    >write</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  ></TD
+			  ></TR
+			><TR
+			><TD CLASS = "decl"
+			  ><A NAME = "v%3Aprotection"
+			    ></A
+			    ><B
+			    >protection</B
+			    > :: Bool</TD
+			  ><TD CLASS = "rdoc"
+			  ></TD
+			  ></TR
+			></TABLE
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "section4"
+	      >Instances</TD
+	      ></TR
+	    ><TR
+	    ><TD CLASS = "body"
+	      ><TABLE CLASS = "vanilla" CELLSPACING = "1" CELLPADDING = "0"
+		><TR
+		  ><TD CLASS = "decl"
+		    >Show <A HREF = "H.UserMode.html#t%3APageFaultErrorCode"
+		      >PageFaultErrorCode</A
+		      ></TD
+		    ></TR
+		  ></TABLE
+		></TD
+	      ></TR
+	    ></TABLE
+	  ></TD
+	></TR
+      ><TR
+      ><TD CLASS = "s15"
+	></TD
+	></TR
+      ><TR
+      ><TD CLASS = "botbar"
+	>Produced by <A HREF = "http://www.haskell.org/haddock/"
+	  >Haddock</A
+	  > version 0.6</TD
+	></TR
+      ></TABLE
+    ></BODY
+  ></HTML
+>
